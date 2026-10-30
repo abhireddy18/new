@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: appliance-circle-marketplace
+    runtime: node
+    plan: free
+    buildCommand: ""
+    startCommand: node server.mjs
+    healthCheckPath: /api/healthz
