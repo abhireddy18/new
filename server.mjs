@@ -12,7 +12,20 @@ const technicians = [
   {name:'Dev Shah',trade:'Refrigeration',rating:'4.7',jobs:98,area:'North + East',availability:'Available today',color:'#efc7a4'},
   {name:'Amit Joshi',trade:'Leaks, drains & water heaters',rating:'4.9',jobs:121,area:'South + East',availability:'Available today',color:'#c7d9b2'}
 ];
-const bookings = [];
+const bookings = [
+  {id:'DEMO-001',name:'Demo Customer 01',phone:'DEMO-0001',area:'Demo Zone A',service:'Washing machine',date:'2026-10-31',status:'New',plan:'None',demo:true},
+  {id:'DEMO-002',name:'Demo Customer 02',phone:'DEMO-0002',area:'Demo Zone B',service:'Refrigerator',date:'2026-10-31',status:'New',plan:'None',demo:true},
+  {id:'DEMO-003',name:'Demo Customer 03',phone:'DEMO-0003',area:'Demo Zone C',service:'Plumbing',date:'2026-10-30',status:'New',plan:'None',demo:true},
+  {id:'DEMO-004',name:'Demo Customer 04',phone:'DEMO-0004',area:'Demo Zone A',service:'Dishwasher',date:'2026-10-30',status:'Scheduled',plan:'None',demo:true},
+  {id:'DEMO-005',name:'Demo Customer 05',phone:'DEMO-0005',area:'Demo Zone B',service:'Air conditioner',date:'2026-10-29',status:'Scheduled',plan:'None',demo:true},
+  {id:'DEMO-006',name:'Demo Customer 06',phone:'DEMO-0006',area:'Demo Zone C',service:'Water heater',date:'2026-10-29',status:'Scheduled',plan:'None',demo:true},
+  {id:'DEMO-007',name:'Demo Customer 07',phone:'DEMO-0007',area:'Demo Zone A',service:'Washing machine',date:'2026-10-28',status:'In progress',plan:'None',demo:true},
+  {id:'DEMO-008',name:'Demo Customer 08',phone:'DEMO-0008',area:'Demo Zone B',service:'Refrigerator',date:'2026-10-28',status:'In progress',plan:'None',demo:true},
+  {id:'DEMO-009',name:'Demo Customer 09',phone:'DEMO-0009',area:'Demo Zone C',service:'Plumbing',date:'2026-10-27',status:'In progress',plan:'None',demo:true},
+  {id:'DEMO-010',name:'Demo Customer 10',phone:'DEMO-0010',area:'Demo Zone A',service:'Dishwasher',date:'2026-10-26',status:'Completed',plan:'None',demo:true},
+  {id:'DEMO-011',name:'Demo Customer 11',phone:'DEMO-0011',area:'Demo Zone B',service:'Air conditioner',date:'2026-10-25',status:'Completed',plan:'None',demo:true},
+  {id:'DEMO-012',name:'Demo Customer 12',phone:'DEMO-0012',area:'Demo Zone C',service:'Water heater',date:'2026-10-24',status:'Completed',plan:'None',demo:true}
+];
 const plans = [{id:'monthly',name:'Monthly Booking Pass',price:99,cadence:'month',detail:'Priority booking for everyday home repairs.',tag:'FLEXIBLE'},{id:'annual',name:'Annual Booking Pass',price:3000,cadence:'year',detail:'A year of priority access and peace of mind.',tag:'BEST VALUE'}];
 const allowedEvents = new Set(['page_viewed','service_category_selected','booking_form_started','booking_submitted','plans_viewed','plan_selected','plan_request_submitted','technician_list_viewed','booking_status_changed','service_completed']);
 const allowedProperties = new Set(['page','service','entry_point','plan_id','status','previous_status','booking_id']);
