@@ -80,4 +80,43 @@ const app = http.createServer(async (req,res) => {
   if (url.pathname.startsWith('/api/')) return send(res,404,{error:'Not found'});
   try { const html=await readFile(path.join(root,'public','index.html'),'utf8'); return send(res,200,html,'text/html; charset=utf-8'); } catch { return send(res,500,'Website files are missing.','text/plain; charset=utf-8'); }
 });
-app.listen(port,'0.0.0.0',()=>console.log(`Appliance Circle listening on ${port}`));
+
+async function seedMixpanelCat2() {
+  if (process.env.MIXPANEL_DEMO_SEED !== 'cat2-funnel-once' || !process.env.MIXPANEL_PROJECT_TOKEN) return;
+  const now = Date.now() - 6 * 60 * 60 * 1000;
+  const events = [];
+  for (let i = 1; i <= 50; i++) {
+    const distinctId = 'cat2_demo_visitor_' + String(i).padStart(3, '0');
+    const startedAt = now - Math.floor((i - 1) / 10) * 24 * 60 * 60 * 1000 + (i % 10) * 17 * 60 * 1000;
+    const add = (event, time) => events.push({ event, properties: {
+      token: process.env.MIXPANEL_PROJECT_TOKEN,
+      distinct_id: distinctId,
+      time: Math.floor(time / 1000),
+      $insert_id: 'cat2-demo-' + i + '-' + event,
+      demo_dataset: true,
+      demo_source: 'CAT2 synthetic funnel sample',
+      page: 'CAT2_SYNTHETIC_DEMO',
+      service: 'synthetic_demo',
+      entry_point: 'CAT2_SYNTHETIC_DEMO'
+    }});
+    add('page_viewed', startedAt);
+    if (i <= 30) add('booking_form_started', startedAt + 2 * 60 * 1000);
+    if (i <= 12) add('booking_submitted', startedAt + 7 * 60 * 1000);
+  }
+  events.sort((a, b) => a.properties.time - b.properties.time);
+  let accepted = 0;
+  for (let i = 0; i < events.length; i += 20) {
+    const response = await fetch('https://api.mixpanel.com/track?verbose=1', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(events.slice(i, i + 20))
+    });
+    const result = await response.text();
+    if (!response.ok) throw new Error('Mixpanel returned HTTP ' + response.status);
+    const statuses = JSON.parse(result);
+    accepted += statuses.filter(item => item.status === 1).length;
+  }
+  console.log('CAT2 synthetic funnel sample imported to Mixpanel: ' + accepted + '/' + events.length);
+}
+
+app.listen(port,'0.0.0.0',()=>{console.log(`Appliance Circle listening on ${port}`); seedMixpanelCat2().catch(error=>console.error('CAT2 synthetic funnel import failed:',error.message));});
